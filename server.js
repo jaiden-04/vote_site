@@ -1,23 +1,11 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const express = require('express');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const { get } = require('http');
-const fs = require("fs").promises;
-const app = express();
-require('express-ws')(app);
-app.use(cookieParser());
+const express = require('express')
+const path = require('path')
 
-const PORT = process.env.PORT || 3001;
-const USERS_PATH = "data/users.json";
+const app = express()
+const PORT = process.env.PORT || 3000
 
- 
-app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', async (req, res) => {
-  res.redirect('https://minecraft-mp.com/server/350391/vote/');
-});
-
-app.listen(PORT, () => { });
+app.listen(PORT, () => {
+    console.log(`Vote site running on port ${PORT}`)
+})

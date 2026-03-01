@@ -1,1 +1,375 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote - jaidn.uk</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0d0f0d;
+            --surface: #141814;
+            --border: #2a3a2a;
+            --green: #4caf50;
+            --green-bright: #76ff7a;
+            --green-dim: #2e6b31;
+            --text: #c8e6c9;
+            --text-dim: #6a8c6b;
+            --gold: #ffd54f;
+            --silver: #b0bec5;
+            --bronze: #a1887f;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'IBM Plex Mono', monospace;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 31px, #1a1f1a 32px),
+                repeating-linear-gradient(90deg, transparent, transparent 31px, #1a1f1a 32px);
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 760px;
+            padding: 3rem 1.5rem 5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .pixel-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(1rem, 4vw, 1.6rem);
+            color: var(--green-bright);
+            text-shadow: 0 0 20px #4caf5088, 0 0 40px #4caf5044;
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+            animation: flicker 8s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 95%, 100% { opacity: 1; }
+            96% { opacity: 0.85; }
+            97% { opacity: 1; }
+            98% { opacity: 0.9; }
+        }
+
+        .subtitle {
+            margin-top: 1rem;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .section-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.55rem;
+            color: var(--text-dim);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .vote-grid {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+        }
+
+        .vote-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.1rem 1.4rem;
+            text-decoration: none;
+            color: var(--text);
+            transition: border-color 0.15s, background 0.15s, transform 0.1s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vote-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--green-dim);
+            transition: background 0.15s;
+        }
+
+        .vote-card:hover {
+            border-color: var(--green);
+            background: #1a231a;
+            transform: translateX(3px);
+        }
+
+        .vote-card:hover::before {
+            background: var(--green-bright);
+        }
+
+        .card-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .card-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .card-cooldown {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+        }
+
+        .card-arrow {
+            font-size: 1rem;
+            color: var(--green-dim);
+            transition: color 0.15s, transform 0.15s;
+        }
+
+        .vote-card:hover .card-arrow {
+            color: var(--green-bright);
+            transform: translateX(3px);
+        }
+
+        .rewards-block {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+
+        .rewards-grid {
+            display: grid;
+            gap: 0.6rem;
+        }
+
+        .reward-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            font-size: 0.78rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #1e261e;
+        }
+
+        .reward-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .reward-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-top: 0.05rem;
+        }
+
+        .reward-desc {
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .reward-detail {
+            color: var(--text-dim);
+            font-size: 0.72rem;
+            margin-top: 0.15rem;
+        }
+
+        .leaderboard-block {
+            margin-top: 3rem;
+        }
+
+        .podium-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .podium-card {
+            flex: 1;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .podium-rank {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rank-1 .podium-rank { color: var(--gold); }
+        .rank-2 .podium-rank { color: var(--silver); }
+
+        .podium-prize {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .period-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 1rem;
+        }
+
+        .period-tab {
+            padding: 0.4rem 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            margin-right: -1px;
+        }
+
+        .period-tab.active {
+            background: var(--green-dim);
+            color: var(--text);
+            border-color: var(--green);
+            z-index: 1;
+            position: relative;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.65rem;
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="pixel-title">VOTE FOR<br>JAIDN.UK</div>
+            <p class="subtitle">Your votes help the server grow. Thanks for the support!</p>
+        </header>
+
+        <div class="section-label">// Voting Sites</div>
+        <div class="vote-grid">
+            <a class="vote-card" href="https://minecraft-server-list.com/server/518355/vote/" target="_blank" rel="noopener">
+                <div class="card-left">
+                    <div class="card-name">Minecraft Server List</div>
+                    <div class="card-cooldown">Cooldown: 24 hours</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </a>
+            <a class="vote-card" href="https://minecraftservers.org/vote/684686" target="_blank" rel="noopener">
+                <div class="card-left">
+                    <div class="card-name">MinecraftServers.org</div>
+                    <div class="card-cooldown">Cooldown: 45 minutes</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </a>
+            <a class="vote-card" href="https://minecraft-mp.com/server/350391/vote/" target="_blank" rel="noopener">
+                <div class="card-left">
+                    <div class="card-name">Minecraft-MP</div>
+                    <div class="card-cooldown">Cooldown: 24 hours</div>
+                </div>
+                <div class="card-arrow">→</div>
+            </a>
+        </div>
+
+        <div class="section-label">// Rewards</div>
+        <div class="rewards-block">
+            <div class="rewards-grid">
+                <div class="reward-row">
+                    <div class="reward-icon">⭐</div>
+                    <div>
+                        <div class="reward-desc">First ever vote — 1,000 coins</div>
+                        <div class="reward-detail">One-time welcome bonus for your very first vote.</div>
+                    </div>
+                </div>
+                <div class="reward-row">
+                    <div class="reward-icon">🗳️</div>
+                    <div>
+                        <div class="reward-desc">Every vote counts</div>
+                        <div class="reward-detail">Each site you vote on helps the server grow. More rewards coming soon!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="leaderboard-block">
+            <div class="section-label">// Top Voter Prizes</div>
+
+            <div class="period-tabs">
+                <button class="period-tab active" onclick="showTab('monthly')">Monthly</button>
+                <button class="period-tab" onclick="showTab('weekly')">Weekly</button>
+            </div>
+
+            <div id="monthly" class="tab-content active">
+                <div class="podium-row">
+                    <div class="podium-card rank-1">
+                        <div class="podium-rank">#1</div>
+                        <div class="podium-prize">5,000 coins</div>
+                    </div>
+                    <div class="podium-card rank-2">
+                        <div class="podium-rank">#2</div>
+                        <div class="podium-prize">1,000 coins</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="weekly" class="tab-content">
+                <div class="podium-row">
+                    <div class="podium-card rank-1">
+                        <div class="podium-rank">#1</div>
+                        <div class="podium-prize">1,000 coins</div>
+                    </div>
+                    <div class="podium-card rank-2">
+                        <div class="podium-rank">#2</div>
+                        <div class="podium-prize">500 coins</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            vote.jaidn.uk &mdash; not affiliated with Mojang or Microsoft
+        </footer>
+    </div>
+
+    <script>
+        function showTab(period) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'))
+            document.querySelectorAll('.period-tab').forEach(el => el.classList.remove('active'))
+            document.getElementById(period).classList.add('active')
+            event.target.classList.add('active')
+        }
+    </script>
+</body>
+</html>
