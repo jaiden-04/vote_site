@@ -3,44 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vote - jaidn.uk</title>
+
+    <title>Vote for jaidn.uk – Minecraft Bedwars Server</title>
+    <meta name="description" content="Vote for jaidn.uk, a low-latency Minecraft Bedwars server where you can easily play with friends. Vote daily on multiple sites and earn in-game coin rewards.">
+    <meta name="keywords" content="minecraft bedwars server, minecraft server vote, bedwars with friends, low latency minecraft, jaidn.uk, minecraft server rewards">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://vote.jaidn.uk/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vote.jaidn.uk/">
+    <meta property="og:title" content="Vote for jaidn.uk – Minecraft Bedwars Server">
+    <meta property="og:description" content="Support jaidn.uk – a low-latency Minecraft Bedwars server. Vote daily and earn in-game coin rewards.">
+    <meta property="og:site_name" content="jaidn.uk">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Vote for jaidn.uk – Minecraft Bedwars Server">
+    <meta name="twitter:description" content="Support jaidn.uk – a low-latency Minecraft Bedwars server. Vote daily and earn in-game coin rewards.">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Vote for jaidn.uk",
+        "description": "Vote for jaidn.uk, a low-latency Minecraft Bedwars server. Vote daily on multiple listing sites and earn in-game coin rewards.",
+        "url": "https://vote.jaidn.uk/",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "jaidn.uk",
+            "url": "https://jaidn.uk/"
+        }
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --bg: #0d0f0d;
-            --surface: #141814;
-            --border: #2a3a2a;
-            --green: #4caf50;
-            --green-bright: #76ff7a;
-            --green-dim: #2e6b31;
+            --bg: #080a08;
+            --surface: #0e110e;
+            --surface-raised: #131813;
+            --border: #223022;
+            --border-bright: #344f34;
+            --green: #3dba41;
+            --green-bright: #5eff62;
+            --green-glow: #3dba4155;
+            --green-dim: #1e4d20;
             --text: #c8e6c9;
-            --text-dim: #6a8c6b;
-            --gold: #ffd54f;
-            --silver: #b0bec5;
-            --bronze: #a1887f;
+            --text-dim: #8aab8b;
+            --text-muted: #6a8a6b;
+            --gold: #e8c340;
+            --silver: #9ab4bc;
+            --accent-line: #192819;
+        }
+
+        @keyframes flicker {
+            0%, 94%, 100% { opacity: 1; }
+            95% { opacity: 0.82; }
+            96.5% { opacity: 1; }
+            97.5% { opacity: 0.88; }
+        }
+
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scanline-scroll {
+            from { transform: translateY(0); }
+            to   { transform: translateY(64px); }
         }
 
         body {
             background: var(--bg);
             color: var(--text);
-            font-family: 'IBM Plex Mono', monospace;
+            font-family: 'Fira Code', monospace;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
 
-        body::before {
+        .crt-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .crt-overlay::before {
             content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.18) 2px,
+                rgba(0,0,0,0.18) 4px
+            );
+        }
+
+        .crt-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.55) 100%);
+        }
+
+        .grid-bg {
             position: fixed;
             inset: 0;
             background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 31px, #1a1f1a 32px),
-                repeating-linear-gradient(90deg, transparent, transparent 31px, #1a1f1a 32px);
-            opacity: 0.3;
+                linear-gradient(var(--accent-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--accent-line) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.6;
             pointer-events: none;
             z-index: 0;
         }
@@ -49,51 +129,72 @@
             position: relative;
             z-index: 1;
             width: 100%;
-            max-width: 760px;
-            padding: 3rem 1.5rem 5rem;
+            max-width: 700px;
+            padding: 4rem 1.5rem 6rem;
+            animation: fade-up 0.6s ease both;
         }
 
         header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .eyebrow {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
         }
 
         .pixel-title {
             font-family: 'Press Start 2P', monospace;
-            font-size: clamp(1rem, 4vw, 1.6rem);
+            font-size: clamp(1.1rem, 4.5vw, 1.8rem);
             color: var(--green-bright);
-            text-shadow: 0 0 20px #4caf5088, 0 0 40px #4caf5044;
-            letter-spacing: 0.05em;
-            line-height: 1.6;
-            animation: flicker 8s infinite;
-        }
-
-        @keyframes flicker {
-            0%, 95%, 100% { opacity: 1; }
-            96% { opacity: 0.85; }
-            97% { opacity: 1; }
-            98% { opacity: 0.9; }
+            text-shadow:
+                0 0 10px var(--green-glow),
+                0 0 30px var(--green-glow),
+                0 0 60px rgba(61,186,65,0.2);
+            line-height: 1.7;
+            animation: flicker 9s infinite;
+            letter-spacing: 0.04em;
         }
 
         .subtitle {
-            margin-top: 1rem;
+            margin-top: 1.4rem;
             color: var(--text-dim);
-            font-size: 0.8rem;
+            font-size: 0.72rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-bright), transparent);
         }
 
         .section-label {
             font-family: 'Press Start 2P', monospace;
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             color: var(--text-dim);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
+            letter-spacing: 0.2em;
+            white-space: nowrap;
         }
 
         .vote-grid {
             display: grid;
-            gap: 0.75rem;
-            margin-bottom: 3rem;
+            gap: 0.5rem;
+            margin-bottom: 3.5rem;
         }
 
         .vote-card {
@@ -102,10 +203,10 @@
             justify-content: space-between;
             background: var(--surface);
             border: 1px solid var(--border);
-            padding: 1.1rem 1.4rem;
+            padding: 1.3rem 1.5rem;
             text-decoration: none;
             color: var(--text);
-            transition: border-color 0.15s, background 0.15s, transform 0.1s;
+            transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
             position: relative;
             overflow: hidden;
         }
@@ -116,68 +217,94 @@
             left: 0;
             top: 0;
             bottom: 0;
-            width: 3px;
+            width: 2px;
             background: var(--green-dim);
-            transition: background 0.15s;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+
+        .vote-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(61,186,65,0.04) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.2s;
         }
 
         .vote-card:hover {
             border-color: var(--green);
-            background: #1a231a;
-            transform: translateX(3px);
+            background: var(--surface-raised);
+            transform: translateX(4px);
+            box-shadow: -4px 0 24px rgba(61,186,65,0.08), inset 0 0 0 1px rgba(61,186,65,0.05);
         }
 
         .vote-card:hover::before {
             background: var(--green-bright);
+            box-shadow: 0 0 8px var(--green-glow);
+        }
+
+        .vote-card:hover::after {
+            opacity: 1;
         }
 
         .card-left {
             display: flex;
             flex-direction: column;
-            gap: 0.3rem;
+            gap: 0.25rem;
+            position: relative;
+            z-index: 1;
         }
 
         .card-name {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
             color: var(--text);
+            letter-spacing: 0.02em;
         }
 
         .card-cooldown {
             font-size: 0.7rem;
             color: var(--text-dim);
+            font-weight: 300;
         }
 
         .card-arrow {
-            font-size: 1rem;
-            color: var(--green-dim);
-            transition: color 0.15s, transform 0.15s;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: color 0.2s, transform 0.2s;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.05em;
         }
 
         .vote-card:hover .card-arrow {
             color: var(--green-bright);
-            transform: translateX(3px);
+            transform: translateX(4px);
         }
 
-        .rewards-block {
+        .panel {
             background: var(--surface);
             border: 1px solid var(--border);
-            padding: 1.5rem;
+        }
+
+        .panel-inner {
+            padding: 1.4rem 1.5rem;
         }
 
         .rewards-grid {
             display: grid;
-            gap: 0.6rem;
+            gap: 0;
         }
 
         .reward-row {
             display: flex;
             align-items: flex-start;
-            gap: 0.8rem;
-            font-size: 0.78rem;
-            padding: 0.6rem 0;
-            border-bottom: 1px solid #1e261e;
+            gap: 1rem;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid var(--accent-line);
         }
+
+        .reward-row:first-child { padding-top: 0; }
 
         .reward-row:last-child {
             border-bottom: none;
@@ -185,12 +312,14 @@
         }
 
         .reward-icon {
-            font-size: 1rem;
+            font-size: 0.95rem;
             flex-shrink: 0;
-            margin-top: 0.05rem;
+            margin-top: 0.1rem;
+            filter: saturate(0.8);
         }
 
         .reward-desc {
+            font-size: 0.85rem;
             color: var(--text);
             line-height: 1.5;
         }
@@ -198,178 +327,353 @@
         .reward-detail {
             color: var(--text-dim);
             font-size: 0.72rem;
-            margin-top: 0.15rem;
+            font-weight: 300;
+            margin-top: 0.2rem;
+            line-height: 1.5;
         }
 
         .leaderboard-block {
-            margin-top: 3rem;
-        }
-
-        .podium-row {
-            display: flex;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .podium-card {
-            flex: 1;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .podium-rank {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .rank-1 .podium-rank { color: var(--gold); }
-        .rank-2 .podium-rank { color: var(--silver); }
-
-        .podium-prize {
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            line-height: 1.5;
+            margin-top: 3.5rem;
         }
 
         .period-tabs {
             display: flex;
             gap: 0;
-            margin-bottom: 1rem;
+            margin-bottom: 0;
+            border-bottom: 1px solid var(--border);
         }
 
         .period-tab {
-            padding: 0.4rem 1rem;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.7rem;
-            border: 1px solid var(--border);
+            padding: 0.55rem 1.2rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            font-weight: 400;
+            border: 1px solid transparent;
+            border-bottom: none;
             background: transparent;
             color: var(--text-dim);
             cursor: pointer;
-            transition: background 0.15s, color 0.15s;
-            margin-right: -1px;
+            transition: color 0.15s, background 0.15s, border-color 0.15s;
+            letter-spacing: 0.05em;
+            position: relative;
+            bottom: -1px;
         }
 
         .period-tab.active {
-            background: var(--green-dim);
+            background: var(--surface);
             color: var(--text);
-            border-color: var(--green);
-            z-index: 1;
-            position: relative;
+            border-color: var(--border);
+            border-bottom-color: var(--surface);
         }
 
-        .tab-content { display: none; }
+        .period-tab:not(.active):hover {
+            color: var(--text);
+        }
+
+        .tab-content {
+            display: none;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-top: none;
+            padding: 1.4rem 1.5rem;
+        }
+
         .tab-content.active { display: block; }
 
-        footer {
-            margin-top: 4rem;
+        .podium-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+
+        .podium-card {
+            background: var(--surface-raised);
+            border: 1px solid var(--border);
+            padding: 1.1rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .podium-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+        }
+
+        .rank-1 .podium-card::before { background: var(--gold); box-shadow: 0 0 10px rgba(232,195,64,0.4); }
+        .rank-2 .podium-card::before { background: var(--silver); }
+
+        .podium-rank {
+            font-family: 'Press Start 2P', monospace;
             font-size: 0.65rem;
+            margin-bottom: 0.6rem;
+            letter-spacing: 0.05em;
+        }
+
+        .rank-1 .podium-rank { color: var(--gold); text-shadow: 0 0 10px rgba(232,195,64,0.3); }
+        .rank-2 .podium-rank { color: var(--silver); }
+
+        .podium-prize {
+            font-size: 0.72rem;
             color: var(--text-dim);
+            font-weight: 300;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 1rem;
+            background: var(--green-bright);
+            color: #080a08;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            z-index: 200;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .skip-link:focus {
+            top: 1rem;
+        }
+
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            gap: 0;
+            background: rgba(8,10,8,0.88);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            margin: -4rem -1.5rem 3rem;
+            padding: 0 1.5rem;
+        }
+
+        .nav-link {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            font-weight: 400;
+            color: var(--text-dim);
+            text-decoration: none;
+            padding: 0.7rem 1rem;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s, border-color 0.15s;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+            border-bottom-color: var(--green-dim);
+        }
+
+        .nav-link.active {
+            color: var(--green-bright);
+            border-bottom-color: var(--green);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--green-bright);
+            outline-offset: 3px;
+        }
+
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: var(--text-dim);
+            letter-spacing: 0.1em;
         }
     </style>
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="crt-overlay"></div>
+    <div class="grid-bg"></div>
+
     <div class="container">
+        <nav class="sticky-nav" aria-label="Page sections">
+            <a class="nav-link active" href="#vote" aria-current="location">Vote</a>
+            <a class="nav-link" href="#rewards">Rewards</a>
+            <a class="nav-link" href="#prizes">Prizes</a>
+        </nav>
+
         <header>
-            <div class="pixel-title">VOTE FOR<br>JAIDN.UK</div>
-            <p class="subtitle">Your votes help the server grow. Thanks for the support!</p>
+            <div class="eyebrow" aria-hidden="true">jaidn.uk &nbsp;/&nbsp; vote</div>
+            <h1 class="pixel-title">VOTE FOR<br>JAIDN.UK</h1>
+            <p class="subtitle">Support our low-latency Bedwars server &mdash; your votes help new players find us.</p>
         </header>
 
-        <div class="section-label">// Voting Sites</div>
+        <main id="main-content">
+
+        <section id="vote" aria-label="Voting sites">
+        <div class="divider" aria-hidden="true">
+            <div class="divider-line"></div>
+            <div class="section-label">VOTING SITES</div>
+            <div class="divider-line"></div>
+        </div>
+
         <div class="vote-grid">
-            <a class="vote-card" href="https://minecraft-server-list.com/server/518355/vote/" target="_blank" rel="noopener">
+            <a class="vote-card" href="https://minecraft-server-list.com/server/518355/vote/" target="_blank" rel="noopener" aria-label="Vote on Minecraft Server List (opens in new tab)">
                 <div class="card-left">
                     <div class="card-name">Minecraft Server List</div>
-                    <div class="card-cooldown">Cooldown: Once per day</div>
+                    <div class="card-cooldown">once per day</div>
                 </div>
-                <div class="card-arrow">→</div>
+                <div class="card-arrow" aria-hidden="true">→</div>
             </a>
-            <a class="vote-card" href="https://minecraftservers.org/vote/684686" target="_blank" rel="noopener">
+            <a class="vote-card" href="https://minecraftservers.org/vote/684686" target="_blank" rel="noopener" aria-label="Vote on MinecraftServers.org (opens in new tab)">
                 <div class="card-left">
                     <div class="card-name">MinecraftServers.org</div>
-                    <div class="card-cooldown">Cooldown: Once per day</div>
+                    <div class="card-cooldown">once per day</div>
                 </div>
-                <div class="card-arrow">→</div>
+                <div class="card-arrow" aria-hidden="true">→</div>
             </a>
-            <a class="vote-card" href="https://minecraft-mp.com/server/350391/vote/" target="_blank" rel="noopener">
+            <a class="vote-card" href="https://minecraft-mp.com/server/350391/vote/" target="_blank" rel="noopener" aria-label="Vote on Minecraft-MP (opens in new tab)">
                 <div class="card-left">
                     <div class="card-name">Minecraft-MP</div>
-                    <div class="card-cooldown">Cooldown: Once per day</div>
+                    <div class="card-cooldown">once per day</div>
                 </div>
-                <div class="card-arrow">→</div>
+                <div class="card-arrow" aria-hidden="true">→</div>
             </a>
         </div>
+        </section>
 
-        <div class="section-label">// Rewards</div>
-        <div class="rewards-block">
-            <div class="rewards-grid">
-                <div class="reward-row">
-                    <div class="reward-icon">⭐</div>
-                    <div>
-                        <div class="reward-desc">First ever vote — 1,000 coins</div>
-                        <div class="reward-detail">One-time welcome bonus for your very first vote.</div>
+        <section id="rewards" aria-label="Rewards">
+        <div class="divider" aria-hidden="true">
+            <div class="divider-line"></div>
+            <div class="section-label">REWARDS</div>
+            <div class="divider-line"></div>
+        </div>
+
+        <div class="panel" style="margin-bottom: 3.5rem;">
+            <div class="panel-inner">
+                <div class="rewards-grid">
+                    <div class="reward-row">
+                        <div class="reward-icon" aria-hidden="true">⭐</div>
+                        <div>
+                            <div class="reward-desc">First vote &mdash; 1,000 coins</div>
+                            <div class="reward-detail">One-time welcome bonus for your very first vote.</div>
+                        </div>
                     </div>
-                </div>
-                <div class="reward-row">
-                    <div class="reward-icon">🗳️</div>
-                    <div>
-                        <div class="reward-desc">Every vote counts</div>
-                        <div class="reward-detail">Each site you vote on helps the server grow. More rewards coming soon!</div>
+                    <div class="reward-row">
+                        <div class="reward-icon" aria-hidden="true">🗳️</div>
+                        <div>
+                            <div class="reward-desc">Every vote counts</div>
+                            <div class="reward-detail">Each site you vote on helps the server grow. More rewards coming soon.</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        </section>
 
+        <section id="prizes" aria-label="Top voter prizes">
         <div class="leaderboard-block">
-            <div class="section-label">// Top Voter Prizes</div>
-
-            <div class="period-tabs">
-                <button class="period-tab active" onclick="showTab('monthly')">Monthly</button>
-                <button class="period-tab" onclick="showTab('weekly')">Weekly</button>
+            <div class="divider" style="margin-bottom: 1rem;" aria-hidden="true">
+                <div class="divider-line"></div>
+                <div class="section-label">TOP VOTER PRIZES</div>
+                <div class="divider-line"></div>
             </div>
 
-            <div id="monthly" class="tab-content active">
+            <div class="period-tabs" role="tablist" aria-label="Prize period">
+                <button id="tab-monthly" class="period-tab active" role="tab" aria-selected="true" aria-controls="monthly" onclick="showTab('monthly', event)">Monthly</button>
+                <button id="tab-weekly" class="period-tab" role="tab" aria-selected="false" aria-controls="weekly" onclick="showTab('weekly', event)">Weekly</button>
+            </div>
+
+            <div id="monthly" class="tab-content active" role="tabpanel" aria-labelledby="tab-monthly">
                 <div class="podium-row">
-                    <div class="podium-card rank-1">
-                        <div class="podium-rank">#1</div>
-                        <div class="podium-prize">5,000 coins</div>
+                    <div class="rank-1">
+                        <div class="podium-card">
+                            <div class="podium-rank">#1</div>
+                            <div class="podium-prize">5,000 coins</div>
+                        </div>
                     </div>
-                    <div class="podium-card rank-2">
-                        <div class="podium-rank">#2</div>
-                        <div class="podium-prize">1,000 coins</div>
+                    <div class="rank-2">
+                        <div class="podium-card">
+                            <div class="podium-rank">#2</div>
+                            <div class="podium-prize">1,000 coins</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div id="weekly" class="tab-content">
+            <div id="weekly" class="tab-content" role="tabpanel" aria-labelledby="tab-weekly">
                 <div class="podium-row">
-                    <div class="podium-card rank-1">
-                        <div class="podium-rank">#1</div>
-                        <div class="podium-prize">1,000 coins</div>
+                    <div class="rank-1">
+                        <div class="podium-card">
+                            <div class="podium-rank">#1</div>
+                            <div class="podium-prize">1,000 coins</div>
+                        </div>
                     </div>
-                    <div class="podium-card rank-2">
-                        <div class="podium-rank">#2</div>
-                        <div class="podium-prize">500 coins</div>
+                    <div class="rank-2">
+                        <div class="podium-card">
+                            <div class="podium-rank">#2</div>
+                            <div class="podium-prize">500 coins</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        </section>
+
+        </main>
 
         <footer>
-            vote.jaidn.uk &mdash; not affiliated with Mojang or Microsoft
+            <address style="font-style:normal;">vote.jaidn.uk</address>
+            &nbsp;&mdash;&nbsp; jaidn.uk is a Minecraft Bedwars server &mdash; not affiliated with Mojang or Microsoft
         </footer>
     </div>
 
     <script>
-        function showTab(period) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'))
-            document.querySelectorAll('.period-tab').forEach(el => el.classList.remove('active'))
-            document.getElementById(period).classList.add('active')
+        function showTab(period, event) {
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active')
+                el.setAttribute('aria-hidden', 'true')
+            })
+            document.querySelectorAll('.period-tab').forEach(el => {
+                el.classList.remove('active')
+                el.setAttribute('aria-selected', 'false')
+            })
+            const panel = document.getElementById(period)
+            panel.classList.add('active')
+            panel.setAttribute('aria-hidden', 'false')
             event.target.classList.add('active')
+            event.target.setAttribute('aria-selected', 'true')
         }
+
+        document.getElementById('monthly').setAttribute('aria-hidden', 'false')
+        document.getElementById('weekly').setAttribute('aria-hidden', 'true')
+
+        const navLinks = document.querySelectorAll('.nav-link')
+        const sections = ['vote', 'rewards', 'prizes'].map(id => document.getElementById(id))
+
+        function updateNav() {
+            let current = sections[0]
+            for (const section of sections) {
+                if (section.getBoundingClientRect().top <= 80) current = section
+            }
+            navLinks.forEach(link => {
+                const isActive = link.getAttribute('href') === '#' + current.id
+                link.classList.toggle('active', isActive)
+                isActive
+                    ? link.setAttribute('aria-current', 'location')
+                    : link.removeAttribute('aria-current')
+            })
+        }
+
+        window.addEventListener('scroll', updateNav, { passive: true })
     </script>
 </body>
 </html>
